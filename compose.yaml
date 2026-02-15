@@ -13,7 +13,18 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
       NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
-      NEXTCLOUD_TRUSTED_DOMAINS: ${NEXTCLOUD_TRUSTED_DOMAINS:-localhost}
+      NEXTCLOUD_TRUSTED_DOMAINS: >-
+        localhost
+        nextcloud1.${DOMAIN}
+        nextcloud2.${DOMAIN}
+        nextcloud3.${DOMAIN}
+        nextcloud4.${DOMAIN}
+        nextcloud5.${DOMAIN}
+        nextcloud6.${DOMAIN}
+        nextcloud7.${DOMAIN}
+        nextcloud8.${DOMAIN}
+        nextcloud9.${DOMAIN}
+        nextcloud10.${DOMAIN}
     depends_on:
       db:
         condition: service_healthy
