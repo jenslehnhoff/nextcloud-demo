@@ -31,9 +31,18 @@ Beim ersten Start wird die Datenbank initialisiert und Nextcloud eingerichtet. D
 ## Instanz stoppen
 
 ```bash
-./stop.sh 1                 # Instanz 1 stoppen (Daten bleiben erhalten)
-./stop.sh 1 --remove-data   # Instanz 1 stoppen und alle Daten loeschen
+./stop.sh 1                   # Instanz 1 stoppen (Daten bleiben erhalten)
+./stop.sh 1 --remove-data     # Instanz 1 stoppen und alle Daten loeschen
 ```
+
+## Alle Instanzen stoppen
+
+```bash
+./stop.sh --all                # Alle Instanzen stoppen
+./stop.sh --all --remove-data  # Alle Instanzen stoppen und komplett aufraeumen
+```
+
+Die Skripte merken sich automatisch, welche Instanzen gestartet wurden (in `.instances`).
 
 ## Zugangsdaten
 
