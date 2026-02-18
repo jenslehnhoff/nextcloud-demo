@@ -6,15 +6,16 @@ services:
       - "${NEXTCLOUD_PORT:-8080}:80"
     volumes:
       - nextcloud_data:/var/www/html
-      - ./proxy.config.php:/var/www/html/config/proxy.config.php:ro
     environment:
-      NEXTCLOUD_HOST: ${NEXTCLOUD_HOST:-localhost}
       MYSQL_HOST: db
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
       NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+      NEXTCLOUD_TRUSTED_PROXIES: 152.53.116.227
+      OVERWRITEPROTOCOL: https
+      OVERWRITEHOST: ${NEXTCLOUD_HOST:-localhost}
       NEXTCLOUD_TRUSTED_DOMAINS: >-
         localhost
         nextcloud1.${DOMAIN}
