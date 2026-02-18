@@ -12,6 +12,7 @@ fi
 INSTANCE="$1"
 export COMPOSE_PROJECT_NAME="nextcloud-${INSTANCE}"
 export NEXTCLOUD_PORT=$((8080 + INSTANCE))
+export NEXTCLOUD_HOST="nextcloud${INSTANCE}.jenslehnhoff.de"
 
 docker compose --env-file .env up -d
 
@@ -20,21 +21,6 @@ touch "$INSTANCES_FILE"
 if ! grep -qx "$INSTANCE" "$INSTANCES_FILE"; then
   echo "$INSTANCE" >> "$INSTANCES_FILE"
 fi
-
-# Warten bis Nextcloud vollstaendig installiert ist, dann Proxy-Settings setzen
-CONTAINER="${COMPOSE_PROJECT_NAME}-nextcloud-1"
-echo "Warte auf Nextcloud-Installation..."
-for i in $(seq 1 90); do
-  if docker exec -u www-data "$CONTAINER" php occ status 2>/dev/null | grep -q "installed: true"; then
-    echo "Nextcloud installiert — setze Proxy-Settings..."
-    docker exec -u www-data "$CONTAINER" php occ config:system:set trusted_proxies 0 --value="152.53.116.227"
-    docker exec -u www-data "$CONTAINER" php occ config:system:set overwriteprotocol --value="https"
-    docker exec -u www-data "$CONTAINER" php occ config:system:set overwritehost --value="nextcloud${INSTANCE}.jenslehnhoff.de"
-    echo "Proxy-Settings gesetzt."
-    break
-  fi
-  sleep 3
-done
 
 echo ""
 echo "Instanz ${INSTANCE} gestartet:"

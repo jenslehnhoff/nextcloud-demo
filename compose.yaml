@@ -6,7 +6,9 @@ services:
       - "${NEXTCLOUD_PORT:-8080}:80"
     volumes:
       - nextcloud_data:/var/www/html
+      - ./proxy.config.php:/var/www/html/config/proxy.config.php:ro
     environment:
+      NEXTCLOUD_HOST: ${NEXTCLOUD_HOST:-localhost}
       MYSQL_HOST: db
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
