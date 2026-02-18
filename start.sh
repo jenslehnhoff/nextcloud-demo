@@ -21,19 +21,19 @@ if ! grep -qx "$INSTANCE" "$INSTANCES_FILE"; then
   echo "$INSTANCE" >> "$INSTANCES_FILE"
 fi
 
-# Warten bis Nextcloud initialisiert ist, dann Proxy-Settings setzen
+# Warten bis Nextcloud vollstaendig installiert ist, dann Proxy-Settings setzen
 CONTAINER="${COMPOSE_PROJECT_NAME}-nextcloud-1"
-echo "Warte auf Nextcloud-Initialisierung..."
-for i in $(seq 1 60); do
-  if docker exec "$CONTAINER" test -f /var/www/html/config/config.php 2>/dev/null; then
-    echo "config.php gefunden — setze Proxy-Settings..."
+echo "Warte auf Nextcloud-Installation..."
+for i in $(seq 1 90); do
+  if docker exec -u www-data "$CONTAINER" php occ status 2>/dev/null | grep -q "installed: true"; then
+    echo "Nextcloud installiert — setze Proxy-Settings..."
     docker exec -u www-data "$CONTAINER" php occ config:system:set trusted_proxies 0 --value="152.53.116.227"
     docker exec -u www-data "$CONTAINER" php occ config:system:set overwriteprotocol --value="https"
     docker exec -u www-data "$CONTAINER" php occ config:system:set overwritehost --value="nextcloud${INSTANCE}.jenslehnhoff.de"
     echo "Proxy-Settings gesetzt."
     break
   fi
-  sleep 2
+  sleep 3
 done
 
 echo ""
